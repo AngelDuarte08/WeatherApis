@@ -1,0 +1,16 @@
+services:
+  flask_app:
+    build: .
+    container_name: flask_services
+    restart: always
+    environment: -FLASK_ENV=production
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx_service
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+    depends_on:
+      - flask_app
