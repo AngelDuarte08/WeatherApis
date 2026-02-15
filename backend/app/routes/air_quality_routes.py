@@ -1,19 +1,30 @@
 from flask import Blueprint, request, jsonify
 from app.services.air_quality_service import get_air_quality
+from app.services.google_maps_service import get_coordinates
 
 air_quality_bp = Blueprint("air_quality", __name__)
 
-@air_quality_bp.route("/air-quality", methods=["GET"])
+@air_quality_bp.route("/air-quality", methods=["POST"])
 def air_quality():
-    lat = request.args.get("lat")
-    lng = request.args.get("lng")
+    data = request.get_json()
+    ciudad = data.get("ciudad")
 
-    if not lat or not lng:
-        return jsonify({"error": "lat y lng requeridos"}), 400
+    if not ciudad:
+        return jsonify({"error": "Ciudad requerida"}), 400
 
-    result = get_air_quality(float(lat), float(lng))
+    coords = get_coordinates(ciudad)
+
+    if not coords:
+        return jsonify({"error": "No se encontraron coordenadas"}), 404
+
+    result = get_air_quality(coords["lat"], coords["lng"])
 
     if not result:
         return jsonify({"error": "No se pudo obtener calidad del aire"}), 500
 
-    return jsonify(result), 200
+    return jsonify({
+        "ciudad": ciudad,
+        "lat": coords["lat"],
+        "lng": coords["lng"],
+        "air_quality": result
+    }), 200
