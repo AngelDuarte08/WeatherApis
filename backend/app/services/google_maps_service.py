@@ -10,6 +10,10 @@ def get_coordinates(direccion: str):
     }
 
     resp = requests.get(URL_GEO, params=params)
+
+    if resp.status_code != 200:
+        return None
+
     geo_data = resp.json()
 
     if geo_data.get('status') != 'OK':
