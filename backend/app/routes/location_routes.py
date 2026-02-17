@@ -6,7 +6,7 @@ location_bp = Blueprint("location", __name__)
 @location_bp.route("/location", methods=["POST"])
 def buscar_coordenadas():
     data = request.get_json()
-    direccion = data.get("direccion")
+    direccion = data.get("ciudad")
 
     if not direccion:
         return jsonify({"error": "Direccion requerida"}), 400

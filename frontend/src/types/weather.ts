@@ -1,14 +1,15 @@
 export interface Weather {
   temperature: number;
-  weather_condition: string;
+  condition: string;
   humidity: number;
+  icon: string;
 }
 
-export interface ForecastDay {
-  date: string;
-  max_temp: number;
-  min_temp: number;
+export interface ForecastHour { 
+  time: string;         
+  temperature: number;  
   condition: string;
+  isDaytime: boolean;
 }
 
 export interface AirQuality {
@@ -21,6 +22,6 @@ export interface FullData {
   lat: number;
   lng: number;
   weather: Weather;
-  forecast: ForecastDay[];
+  forecast: ForecastHour[];
   air: AirQuality;
 }
