@@ -1,16 +1,23 @@
 services:
+  # Servicio del Backend
   flask_app:
-    build: .
+    build: ./backend
     container_name: flask_services
     restart: always
-    environment: -FLASK_ENV=production
+    env_file:
+      - ./backend/.env
+    environment:
+      - FLASK_ENV=production
 
-  nginx:
-    image: nginx:latest
-    container_name: nginx_service
+  # Servicio del Frontend + Nginx
+  frontend_app:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: nginx_frontend
+    restart: always
+      - ./frontend/.env
     ports:
       - "80:80"
-    volumes:
-      - ./nginx/conf.d:/etc/nginx/conf.d
     depends_on:
       - flask_app
