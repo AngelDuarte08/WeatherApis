@@ -6,10 +6,16 @@ interface Props {
 
 const WeatherCard = ({ weather }: Props) => {
   return (
-    <div>
+    <div style={{ textAlign: 'center' }}>
       <h2>Clima Actual</h2>
-      <p>Temperatura: {weather.temperature}°</p>
-      <p>Condición: {weather.weather_condition}</p>
+      {/* Añadimos .png al final si la URL viene incompleta */}
+      <img 
+        src={`${weather.icon}.png`} 
+        alt={weather.condition} 
+        style={{ width: '64px' }} 
+      />
+      <p>Temperatura: {weather.temperature}°C</p>
+      <p>Condición: {weather.condition}</p>
       <p>Humedad: {weather.humidity}%</p>
     </div>
   );
